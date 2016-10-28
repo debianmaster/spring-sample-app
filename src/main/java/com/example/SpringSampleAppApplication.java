@@ -8,23 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import sun.misc.Signal;
-import sun.misc.SignalHandler;
+
 
 @SpringBootApplication
 public class SpringSampleAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSampleAppApplication.class, args);
-	}
-	private static final Signal SIG_INT = new Signal("INT");
-	public static void attachSignalHandler(final Runnable runnable) {
-		Signal.handle(SIG_INT, new SignalHandler() {
-			@Override
-			public void handle(Signal signal) {
-				runnable.run();
-			}
-		});
 	}
 }
 
