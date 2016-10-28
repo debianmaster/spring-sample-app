@@ -41,9 +41,9 @@ class HomeRestController {
 	@RequestMapping("/healthz")
 	public ResponseEntity healthz(){
 		if (healthy)
-			return new ResponseEntity(HttpStatus.FOUND);
+			return new ResponseEntity(HttpStatus.ACCEPTED);
 		else
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
 	}
 
 	@RequestMapping("/cancer")
