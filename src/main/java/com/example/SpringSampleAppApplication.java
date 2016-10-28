@@ -35,7 +35,7 @@ class HomeRestController {
 
 	@RequestMapping("/")
 	public String home(){
-         return hostname;
+         return "<h1>"+hostname+"</h1>";
 	}
 
 	@RequestMapping("/healthz")
