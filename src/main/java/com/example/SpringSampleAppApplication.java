@@ -12,7 +12,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.DriverManager;
 import javax.sql.DataSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @SpringBootApplication
 public class SpringSampleAppApplication {
@@ -59,13 +61,14 @@ class HomeRestController {
 	@RequestMapping("/dbtest")
 	public String dbtest(){
 		String sql = "SELECT * FROM CUSTOMER";
-		DataSource dataSource=DataSource("");
+		DataSource dataSource=null;
 		Connection conn = null;
 
 		try {
-			conn = dataSource.getConnection();
+			conn =  DriverManager.getConnection("jdbc:mysql://localhost:3306/dev?useSSL=false","root","");
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
+			rs.next();
 			String res=rs.getInt("CUST_ID") + rs.getString("NAME")+rs.getInt("Age");
 			return res;
 		} catch (SQLException e) {
@@ -78,4 +81,6 @@ class HomeRestController {
 			}
 		}
 	}
+
+
 }
