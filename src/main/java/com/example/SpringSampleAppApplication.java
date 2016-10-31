@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 
 @SpringBootApplication
 public class SpringSampleAppApplication {
@@ -50,5 +54,28 @@ class HomeRestController {
 	public String cancer(){
 		healthy=false;
 		return "Killed "+hostname;
+	}
+
+	@RequestMapping("/dbtest")
+	public String dbtest(){
+		String sql = "SELECT * FROM CUSTOMER";
+		DataSource dataSource=DataSource("");
+		Connection conn = null;
+
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			String res=rs.getInt("CUST_ID") + rs.getString("NAME")+rs.getInt("Age");
+			return res;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 }
