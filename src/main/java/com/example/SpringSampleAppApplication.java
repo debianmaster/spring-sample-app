@@ -60,7 +60,7 @@ class HomeRestController {
 
 	@RequestMapping("/dbtest")
 	public String dbtest(){
-		String sql = "SELECT * FROM CUSTOMER";
+		String sql = "SELECT * FROM customer";
 		DataSource dataSource=null;
 		Connection conn = null;
 
