@@ -65,7 +65,7 @@ class HomeRestController {
 		Connection conn = null;
 
 		try {
-			conn =  DriverManager.getConnection("jdbc:mysql://mysql.test.svc.cluster.local:3306/dev?useSSL=false","root1","root");
+			conn =  DriverManager.getConnection("jdbc:mysql://10.0.0.249:3306/dev?useSSL=false","root","");
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
