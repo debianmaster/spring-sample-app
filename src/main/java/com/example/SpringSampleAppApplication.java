@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.Console;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
@@ -14,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 import javax.sql.DataSource;
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @SpringBootApplication
@@ -58,18 +62,22 @@ class HomeRestController {
 		return "Killed "+hostname;
 	}
 
+	@Autowired
+	private Environment env;
+
 	@RequestMapping("/dbtest")
 	public String dbtest(){
-		String sql = "SELECT * FROM CUSTOMER";
+		
+		String sql = "SELECT * FROM customer";
 		DataSource dataSource=null;
 		Connection conn = null;
 
 		try {
-			conn =  DriverManager.getConnection("jdbc:mysql://localhost:3306/dev?useSSL=false","root","");
+			conn =  DriverManager.getConnection(env.getProperty("spring.datasource.url"),env.getProperty("spring.datasource.username"),env.getProperty("spring.datasource.password"));
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			String res=rs.getInt("CUST_ID") + rs.getString("NAME")+rs.getInt("Age");
+			String res="<h1>"+rs.getInt("CUST_ID") + rs.getString("NAME")+rs.getInt("Age")+"</h1>";
 			return res;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
