@@ -12,7 +12,9 @@ Deploy using jar:
 ```sh
 oc import-image --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift s2i-java --confirm  #one time activity
 oc new-build --binary=true --strategy=source --image-stream=s2i-java --name=sample-app-img
+
 oc start-build sample-app-img --from-dir=./deployments/
+
 oc new-app sample-app-img --name=sample-app
 ```
 
