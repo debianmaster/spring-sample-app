@@ -26,5 +26,11 @@ oc create -f https://gist.githubusercontent.com/tqvarnst/3ca512b01b7b7c1a1da0532
 ```
 
 
+Data load
+```sh
+curl https://raw.githubusercontent.com/debianmaster/spring-sample-app/master/schema.sql > schema.sq
+mysql -u mysql -p sampledb < schema.sql
+```
+
 more info here:     
 https://developers.redhat.com/blog/2017/02/23/getting-started-with-openshift-java-s2i/
