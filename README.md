@@ -28,7 +28,7 @@ oc create -f https://gist.githubusercontent.com/tqvarnst/3ca512b01b7b7c1a1da0532
 
 Data load
 ```sh
-curl https://raw.githubusercontent.com/debianmaster/spring-sample-app/master/schema.sql > schema.sq
+curl https://raw.githubusercontent.com/debianmaster/spring-sample-app/master/schema.sql > schema.sql
 mysql -u mysql -p sampledb < schema.sql
 ```
 
