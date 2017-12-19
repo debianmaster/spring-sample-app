@@ -1,7 +1,15 @@
 node('')  {
-    openshift.withCluster() {
+    openshift.withCluster('openshift') {
         stage('Verify/Create Objects in DEV') {
-           
+            openshift.withProject( 'dev1' ) {
+                //def bc = openshift.selector( 'bc', [ app:'ssa' ] ).object()
+                //if(null == bc) {
+                  def created = openshift.newApp( 'https://github.com/debianmaster/spring-sample-app.git','--name','ssa');
+                  def appbc = created.narrow('bc')
+                  sleep(3)
+                  appbc.logs('-f')
+                //}
+            }
         }
         stage('Verify / Create objects in QA') {
             openshift.withProject( 'dev1' ) {
