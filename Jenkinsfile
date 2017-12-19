@@ -1,5 +1,5 @@
 node('')  {
-    openshift.withCluster('openshift') {
+    openshift.withCluster('insecure://emp.ck.osecloud.com:8443','hy_NcyiOQZ51JLXyAUH0kDc8I-kxMJbbu0l2wFPeWWg') {
         stage('Verify/Create Objects in DEV') {
             openshift.withProject( 'dev1' ) {
                 //def bc = openshift.selector( 'bc', [ app:'ssa' ] ).object()
