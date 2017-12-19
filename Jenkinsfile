@@ -1,37 +1,12 @@
-node('')  {
-    openshift.withCluster('insecure://emp.ck.osecloud.com:8443','hy_NcyiOQZ51JLXyAUH0kDc8I-kxMJbbu0l2wFPeWWg') {
-        stage('Verify/Create Objects in DEV') {
-            openshift.withProject( 'dev1' ) {
-                def bc = openshift.selector( 'bc', [ app:'ssa' ] ).object()
-                if(null == bc) {
-                  def created = openshift.newApp('https://github.com/debianmaster/spring-sample-app.git','--name','ssa');
-                  def appbc = created.narrow('bc')
-                  sleep(3)
-                  appbc.logs('-f')
-                }
-            }
-        }
-        stage('Verify / Create objects in QA') {
-            openshift.withProject( 'dev1' ) {
-                def welcome = openshift.selector( 'dc', [ app: 'ssa' ] )
-                def welcomeObjects = welcome.objects( exportable:true )
-                openshift.withProject( 'qa1' ) {
-                     openshift.create( welcomeObjects )
-                }
-            }
-        } 
-        stage('Build') {
-            openshift.withProject( 'dev1' ) {
-                 def bc = openshift.selector( 'bc', [ app:'ssa' ] )
-                 bc.startBuild()
-                 sleep(3)
-                 bc.logs('-f')
-            }
-        }
-        stage('Relaset to QA') {
-            openshift.withProject( 'qa1' ) {
-                 
-            }
-        }       
-    }
+node('') {
+          stage 'buildInDevelopment'
+            openshiftBuild(namespace:'dev',buildConfig: 'welcome', showBuildLogs: 'true')
+          stage 'deployInDevelopment'
+            openshiftDeploy(namespace:'dev',deploymentConfig: 'welcome')
+            openshiftScale(namespace:'dev',deploymentConfig: 'welcome',replicaCount: '5')
+          stage 'deployInQA'
+            input 'Proceeed ?'
+            openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA')
+            openshiftDeploy(namespace:'qa',deploymentConfig: 'welcome')
+            openshiftScale(namespace:'qa',deploymentConfig: 'welcome',replicaCount: '5')
 }
