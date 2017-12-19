@@ -4,7 +4,7 @@ node('')  {
             openshift.withProject( 'dev1' ) {
                 def bc = openshift.selector( 'bc', [ app:'ssa' ] ).object()
                 if(null == bc) {
-                  def created = openshift.newApp( 'https://github.com/debianmaster/spring-sample-app.git','--name','ssa','--strategy','source');
+                  def created = openshift.newApp('https://github.com/debianmaster/spring-sample-app.git','--name','ssa');
                   def appbc = created.narrow('bc')
                   sleep(3)
                   appbc.logs('-f')
