@@ -1,5 +1,5 @@
 node('')  {
-
+    openshift.withCluster() {
         stage('Verify/Create Objects in DEV') {
             openshift.withProject( 'dev1' ) {
                 def bc = openshift.selector( 'bc', [ app:'ssa' ] ).object()
@@ -33,5 +33,5 @@ node('')  {
                  
             }
         }       
-    
+    }
 }
