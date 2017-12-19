@@ -2,13 +2,13 @@ node('')  {
     openshift.withCluster('insecure://emp.ck.osecloud.com:8443','hy_NcyiOQZ51JLXyAUH0kDc8I-kxMJbbu0l2wFPeWWg') {
         stage('Verify/Create Objects in DEV') {
             openshift.withProject( 'dev1' ) {
-                //def bc = openshift.selector( 'bc', [ app:'ssa' ] ).object()
-                //if(null == bc) {
+                def bc = openshift.selector( 'bc', [ app:'ssa' ] ).object()
+                if(null == bc) {
                   def created = openshift.newApp( 'https://github.com/debianmaster/spring-sample-app.git','--name','ssa');
                   def appbc = created.narrow('bc')
                   sleep(3)
                   appbc.logs('-f')
-                //}
+                }
             }
         }
         stage('Verify / Create objects in QA') {
